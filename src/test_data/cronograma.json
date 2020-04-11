@@ -1,0 +1,69 @@
+{
+        "dataInicioAgendada": "2020-04-11T20:18:51.551Z",
+        "dataInicio": "2020-04-11T20:18:51.551Z",
+        "dataFimAgendada": "2020-04-11T20:18:51.551Z",
+        "dataFim": "2020-04-11T20:18:51.551Z",
+        "encarregado": {
+            "nome": "Rodrigo Souza Tassoni",
+            "matricula": "45",
+            "setor": {
+            "tipo": "manutenção"
+            }
+        },
+        "atividades": [
+            {
+                "descricao": "Gerador bienal (elétrica)",
+                "observacao": "Cuidado ao abrir a porta do gerador",
+                "dataInicioAgendada": "2020-04-11T20:18:51.551Z",
+                "dataInicio": "2020-04-11T20:18:51.551Z",
+                "dataFimAgendada": "2020-04-11T20:18:51.551Z",
+                "dataFim": "2020-04-11T20:18:51.551Z",
+                "OS": "583856",
+                "AES": "31245",
+                "executor": {
+                    "tipo": "eletricista",
+                    "nome": "Lucas Dolsan Pereira",
+                    "matricula": "17",
+                    "setor": {
+                        "tipo": "manutenção"
+                    }
+                }
+            },
+            {
+                "descricao": "Gerador anual (mecânica)",
+                "observacao": "Certifique-se que a temperatura ambiente está em condições adequadas dentro do housing do gerador",
+                "dataInicioAgendada": "2020-04-11T20:18:51.551Z",
+                "dataInicio": "2020-04-11T20:18:51.551Z",
+                "dataFimAgendada": "2020-04-11T20:18:51.551Z",
+                "dataFim": "2020-04-11T20:18:51.551Z",
+                "OS": "658435",
+                "AES": "46901",
+                "executor": {
+                    "tipo": "mecânico",
+                    "nome": "Gabriel Willemann",
+                    "matricula": "24",
+                    "setor": {
+                        "tipo": "manutenção"
+                    }
+                }
+            },
+            {
+                "descricao": "Reforçar porta escovas de carvão",
+                "observacao": "",
+                "dataInicioAgendada": "2020-04-11T20:18:51.551Z",
+                "dataInicio": "2020-04-11T20:18:51.551Z",
+                "dataFimAgendada": "2020-04-11T20:18:51.551Z",
+                "dataFim": "2020-04-11T20:18:51.551Z",
+                "OS": "785536",
+                "AES": "56545",
+                "executor": {
+                    "tipo": "eletricista",
+                    "nome": "Lucas Dolsan Pereira",
+                    "matricula": "17",
+                    "setor": {
+                        "tipo": "manutenção"
+                    }
+                }
+            }
+        ]
+    }

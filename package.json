@@ -1,0 +1,19 @@
+{
+  "name": "schedule-manager-backend",
+  "version": "1.0.0",
+  "description": "PIN 1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "insert-cronograma": "node src/scripts/insertCronograma.js",
+    "delete-every-cronograma": "node src/scripts/deleteEveryCronograma.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.7"
+  }
+}
