@@ -1,7 +1,5 @@
 const setorSchema = {
-    setor: {
-        tipo: String,
-    }
+    tipo: String,
 }
 
 module.exports = setorSchema
