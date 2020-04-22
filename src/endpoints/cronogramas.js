@@ -3,7 +3,7 @@ const cronogramaModel = require('../models/cronogramaModel')
 
 
 module.exports = async function cronogramas(request, response) {
-    await database.connect()
+    database.connect()
     const cronogramas = await cronogramaModel.find()
     response.json({ cronogramas })
 }

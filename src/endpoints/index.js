@@ -2,9 +2,14 @@ const getCronogramas = require('./cronogramas')
 const database = require('../database')
 const cronogramaModel = require('../models/cronogramaModel')
 const cronograma = require('../test_data/cronograma.json')
+const colaboradorModel = require('../models/colaboradorModel')
+const auth = require('./auth')
 
-function getUsers(request, response) {
-    response.sendStatus(404)
+async function getUsers(request, response) {
+    await database.connect()
+    const users = await colaboradorModel.find()
+    await database.disconnect()
+    return response.json({ users })
 }
 
 function getAtividades(request, response) {
@@ -18,6 +23,14 @@ const endpoints = [{
     {
         url: '/test/cronogramas',
         handler: getCronogramas
+    },
+    {
+        url: '/test/colaboradores',
+        handler: async (request, response) => {
+            await database.connect()
+            const colaboradores = await colaboradorModel.find()
+            response.json({ colaboradores })
+        }
     },
     {
         url: '/test/delete-cronogramas',
@@ -49,11 +62,42 @@ const endpoints = [{
     {
         url: '/atividades',
         handler: getAtividades
+    },
+    {
+        url: '/authenticate',
+        handler: auth.authenticate,    
+        expectsBody: true
+    },
+    {
+        url: '/register',
+        handler: auth.register, 
+        expectsBody: true
+    },
+    {
+        url: '/wipe-users',
+        handler: auth.wipeUsers,
     }
 ]
 
+function endpointProxy(endpoint) {
+    if(endpoint.expectsBody) {
+        const proxiedHandler = (request, response) => {
+            if (!Object.keys(request.body).length) {
+                return response.sendStatus(200)
+            }
+            endpoint.handler(request, response)
+        }
+        return {...endpoint, handler: proxiedHandler}
+    }
+
+    return endpoint
+}
+
 function initializeEndpoints(app) {
-    endpoints.map(({ url, handler }) => app.use(url, handler))
+    endpoints.map(endpoint => {
+        const { url, handler } = endpointProxy(endpoint)
+        app.use(url, handler)
+    })
 }
 
 module.exports = {

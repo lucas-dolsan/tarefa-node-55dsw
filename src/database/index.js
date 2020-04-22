@@ -9,12 +9,12 @@ const connectArgs = {
     useUnifiedTopology: true
 }
 
-function connect() {
-    mongoose.connect(url, connectArgs)
+async function connect() {
+    await mongoose.connect(url, connectArgs)
 }
 
-function disconnect() {
-    mongoose.disconnect()
+async function disconnect() {
+    await mongoose.disconnect()
 }
 
 module.exports = {
