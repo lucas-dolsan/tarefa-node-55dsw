@@ -19,7 +19,7 @@ const endpoints = [
     new Endpoint("/authenticate", auth.authenticate),
     new Endpoint("/register", auth.register),
     new Endpoint("/wipe-users", auth.wipeUsers, { requiresAccessToken: true }),
-    new Endpoint("/conogramas", getCronogramas, { requiresAccessToken: true }),
+    new Endpoint("/cronogramas", getCronogramas, { requiresAccessToken: true }),
     new Endpoint("/atividades", getAtividades, { requiresAccessToken: true }),
     new Endpoint("/users", getUsers, { requiresAccessToken: true }),
 ]
