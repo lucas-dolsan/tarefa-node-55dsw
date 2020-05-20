@@ -49,6 +49,13 @@ function hashPassword(login, password) {
     return sha256.x2(`${sha256(login)}${sha256(password)}${PASSWORD_HASH_SALT}`)
 }
 
+async function getUserFromToken(accessToken) {
+    await database.connect()
+    const user = await colaboradorModel.findOne({ "auth.accessToken": accessToken })
+    await database.disconnect()
+    return user
+}
+
 async function wipeUsers(request, response) {
     await database.connect()
     await colaboradorModel.deleteMany()
@@ -57,9 +64,15 @@ async function wipeUsers(request, response) {
 }
 
 function proxyEndpoint(endpoint) {
+    function defaultRequestLog(request) {
+        const now = new Date()
+        console.warn(`request at "${request.baseUrl}" [${now.getMonth()}-${now.getDate()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}]`)
+    }    
     const proxiedHandler = async (request, response) => {
+        defaultRequestLog(request)
         if (endpoint.requiresAccessToken) {
             if (await isAccessTokenValid(request.header("Authorization"))) {
+                request.user = await getUserFromToken(request.header("Authorization"))
                 endpoint.handler(request, response)
             } else {
                 return response.json({
@@ -229,4 +242,5 @@ module.exports = {
     wipeUsers,
     proxyEndpoint,
     isAccessTokenValid,
+    getUserFromToken,
 }

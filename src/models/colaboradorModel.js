@@ -1,5 +1,16 @@
-const mongoose = require('mongoose');
-const colaboradorSchema = require('../schemas/colaboradorSchema')
-const colaboradorSchemaInstance = new mongoose.Schema(colaboradorSchema)
+const mongoose = require('mongoose')
 
-module.exports = mongoose.model('colaborador', colaboradorSchemaInstance);
+const colaboradorSchema = new mongoose.Schema({
+    nome: String,
+    matricula: Number,
+    setor: {
+        tipo: String,
+    },
+    auth: {
+        login: String,
+        password: String,
+        accessToken: String,
+    },
+})
+
+module.exports = mongoose.model('Colaborador', colaboradorSchema)

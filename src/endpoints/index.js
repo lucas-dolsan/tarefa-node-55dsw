@@ -1,4 +1,4 @@
-const getCronogramas = require("./cronogramas")
+const { createCronograma, getEveryCronograma, getEveryCronogramaByEncarregado } = require("./cronogramas")
 const database = require("../database")
 const colaboradorModel = require("../models/colaboradorModel")
 const auth = require("./auth")
@@ -19,7 +19,7 @@ const endpoints = [
     new Endpoint("/authenticate", auth.authenticate),
     new Endpoint("/register", auth.register),
     new Endpoint("/wipe-users", auth.wipeUsers, { requiresAccessToken: true }),
-    new Endpoint("/cronogramas", getCronogramas, { requiresAccessToken: true }),
+    new Endpoint("/cronogramas", getEveryCronogramaByEncarregado, { requiresAccessToken: true }),
     new Endpoint("/atividades", getAtividades, { requiresAccessToken: true }),
     new Endpoint("/users", getUsers, { requiresAccessToken: true }),
 ]
