@@ -182,7 +182,7 @@ function validateLogin(login) {
 }
 
 async function register(request, response) {
-    const { login, nome, matricula, password } = request.body
+    const { login, nome, matricula, setor, password } = request.body
 
     const isLoginValid = validateLogin(login)
 
@@ -218,7 +218,7 @@ async function register(request, response) {
     const colaborador = {
         nome,
         matricula,
-        setor: {},
+        setor,
         auth: {
             login,
             accessToken,

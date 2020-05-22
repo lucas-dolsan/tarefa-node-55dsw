@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const cronogramaSchema = new mongoose.Schema({
     nome: String,
+    descricao: String,
     dataInicioAgendada: Date,
     dataInicio: Date,
     dataFimAgendada: Date,

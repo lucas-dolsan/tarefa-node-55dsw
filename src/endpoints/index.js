@@ -16,12 +16,13 @@ function getAtividades(request, response) {
 }
 
 const endpoints = [
-    new Endpoint("/authenticate", auth.authenticate),
-    new Endpoint("/register", auth.register),
-    new Endpoint("/wipe-users", auth.wipeUsers, { requiresAccessToken: true }),
-    new Endpoint("/cronogramas", getEveryCronogramaByEncarregado, { requiresAccessToken: true }),
-    new Endpoint("/atividades", getAtividades, { requiresAccessToken: true }),
-    new Endpoint("/users", getUsers, { requiresAccessToken: true }),
+    new Endpoint("/api/authenticate", auth.authenticate),
+    new Endpoint("/api/register", auth.register),
+    new Endpoint("/api/wipe-users", auth.wipeUsers, { requiresAccessToken: true }),
+    new Endpoint("/api/cronogramas", getEveryCronograma, { requiresAccessToken: false }),
+    new Endpoint("/api/create/cronograma", createCronograma, { requiresAccessToken: true }),
+    new Endpoint("/api/atividades", getAtividades, { requiresAccessToken: true }),
+    new Endpoint("/api/users", getUsers, { requiresAccessToken: true }),
 ]
 function initializeEndpoints(app) {
     endpoints.map(endpoint => endpoint.initialize(app))

@@ -4,7 +4,7 @@ const colaboradorSchema = new mongoose.Schema({
     nome: String,
     matricula: Number,
     setor: {
-        tipo: String,
+        type: String,
     },
     auth: {
         login: String,

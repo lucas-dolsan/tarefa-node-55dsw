@@ -3,19 +3,21 @@ const CronogramaModel = require('../models/cronogramaModel')
 
 async function getEveryCronograma(request, response) {
     await database.connect()
-    const cronogramas = await CronogramaModel.find()
+    const cronogramas = await CronogramaModel.find().populate('encarregado')
+
     await database.disconnect()
     response.json({ cronogramas })
 }
 
 async function createCronograma(request, response) {
-    const { nome, dataInicioAgendada, dataInicio, dataFimAgendada, dataFim } = request.body
+    const { nome, dataInicioAgendada, descricao, dataInicio, dataFimAgendada, dataFim } = request.body
 
     await database.connect()
 
     const cronogramaDocument = new CronogramaModel({
         nome,
         dataInicioAgendada,
+        descricao,
         dataInicio,
         dataFimAgendada,
         dataFim,

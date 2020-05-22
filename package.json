@@ -4,7 +4,7 @@
   "description": "PIN 1",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "BROWSER=none node src/index.js",
     "insert-cronograma": "node src/scripts/insertCronograma.js",
     "delete-every-cronograma": "node src/scripts/deleteEveryCronograma.js"
   },
