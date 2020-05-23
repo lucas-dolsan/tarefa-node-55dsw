@@ -29,7 +29,7 @@ async function createCronograma(request, response) {
 
     await database.disconnect()
 
-    response.json({ created: cronogramaDocument })
+    response.json({ message: 'Cronograma criado com sucesso', success: true })
 }
 
 
