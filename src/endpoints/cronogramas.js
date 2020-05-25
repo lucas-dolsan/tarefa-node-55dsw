@@ -1,18 +1,24 @@
 const database = require('../database')
 const CronogramaModel = require('../models/cronogramaModel')
+const AtividadeModel = require('../models/atividadeModel')
 
 async function getEveryCronograma(request, response) {
     await database.connect()
-    const cronogramas = await CronogramaModel.find().populate('encarregado')
-
+    const cronogramas = await CronogramaModel.find().populate('encarregado').populate('atividades')
     await database.disconnect()
     response.json({ cronogramas })
 }
 
 async function createCronograma(request, response) {
-    const { nome, dataInicioAgendada, descricao, dataInicio, dataFimAgendada, dataFim } = request.body
+    const { nome, dataInicioAgendada, atividades, descricao, dataInicio, dataFimAgendada, dataFim } = request.body
 
     await database.connect()
+
+    const createdAtividades = await Promise.all(atividades.map(async atividade => {
+        const atividadeDocument = await AtividadeModel(atividade)
+        atividadeDocument.save()
+        return atividadeDocument
+    }))
 
     const cronogramaDocument = new CronogramaModel({
         nome,
@@ -21,7 +27,7 @@ async function createCronograma(request, response) {
         dataInicio,
         dataFimAgendada,
         dataFim,
-        atividades: [],
+        atividades: createdAtividades,
         encarregado: request.user,
     })
 

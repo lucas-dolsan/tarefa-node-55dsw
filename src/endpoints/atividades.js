@@ -3,6 +3,16 @@ const database = require('../database')
 const AtividadeModel = require('../models/atividadeModel')
 const CronogramaModel = require('../models/cronogramaModel')
 
+async function getEveryAtividade(request, response) {
+    await database.connect()
+
+    const atividades = await AtividadeModel.find()
+
+    await database.disconnect()
+
+    response.json({ atividades })
+}
+
 async function createAtividade(request, response) {
     const { 
         numeroItem,
@@ -56,4 +66,5 @@ async function setAtividadeExecutor(request, response) {
 module.exports = {
     createAtividade,
     setAtividadeExecutor,
+    getEveryAtividade,
 }
