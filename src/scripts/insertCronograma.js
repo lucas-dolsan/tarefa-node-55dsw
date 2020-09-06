@@ -1,13 +1,11 @@
 (async () =>  {
-    const database = require('../database')
+    const databaseService = require("../services/database-service")
     const cronogramaModel = require('../models/cronogramaModel')
     const cronograma = require('../test_data/cronograma.json')
 
-    database.connect()
-    const cronogramaDoc =  new cronogramaModel(cronograma)
-    await cronogramaDoc.save()
-
-    database.disconnect()
+    await databaseService.connect()
+    await new cronogramaModel(cronograma).save()
+    await databaseService.disconnect()
 
 })()
 

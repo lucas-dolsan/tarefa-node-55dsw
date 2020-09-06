@@ -1,37 +1,25 @@
 const { createCronograma, getEveryCronograma, getEveryCronogramaByEncarregado } = require("./cronogramas")
-const { getEveryAtividade } = require('./atividades')
-const database = require("../database")
-const colaboradorModel = require("../models/colaboradorModel")
-const auth = require("./auth")
-const utils = require("./utils")
-const Endpoint = require("./endpoint")
+const databaseService = require("../services/database-service")
+const Endpoint = require("../classes/endpoint")
 
-async function getUsers(request, response) {
-    await database.connect()
-    const users = await colaboradorModel.find()
-    await database.disconnect()
-    return response.json({ users })
-}
+const atividadeEndpoints = require("./atividades")
+const authEndpoints = require("./auth")
+const cronogramaEndpoints = require("./cronogramas")
+const userEndpoints = require("./users")
 
-function getAtividades(request, response) {
-    response.sendStatus(404)
-}
+const wipeDatabaseEndpoint = new Endpoint(
+    "/api/wipe-database",
+    "GET",
+    async (req, res) => await databaseService.wipeDatabase() && res.status(200), 
+    { requiresAccessToken: false }
+)
 
 const endpoints = [
-    new Endpoint("/api/authenticate", auth.authenticate),
-    new Endpoint("/api/register", auth.register),
-    new Endpoint("/api/wipe-database", utils.wipeDatabase, { requiresAccessToken: false }),
-    new Endpoint("/api/cronogramas", getEveryCronograma, { requiresAccessToken: false }),
-    new Endpoint("/api/atividades", getEveryAtividade, { requiresAccessToken: false }),
-    new Endpoint("/api/create/cronograma", createCronograma, { requiresAccessToken: true }),
-    new Endpoint("/api/atividades", getAtividades, { requiresAccessToken: true }),
-    new Endpoint("/api/users", getUsers, { requiresAccessToken: true }),
+    wipeDatabaseEndpoint,
+    ...atividadeEndpoints,
+    ...authEndpoints,
+    ...cronogramaEndpoints,
+    ...userEndpoints,
 ]
-function initializeEndpoints(app) {
-    endpoints.map(endpoint => endpoint.initialize(app))
-}
 
-module.exports = {
-    endpoints,
-    initializeEndpoints,
-}
+module.exports = endpoints

@@ -1,20 +1,11 @@
-const express = require("express")
-const bodyParser = require("body-parser")
-const cors = require("cors")
-const app = express()
-const port = 3001
-const { initializeEndpoints } = require("./endpoints")
+require('dotenv').config()
 
-app.use(cors())
-app.use(bodyParser.json())
-app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
-)
+const apiService = require('./services/api-service')
+const databaseService = require('./services/database-service')
+const endpoints = require("./endpoints")
 
-initializeEndpoints(app)
-
-app.listen(port, () => {
-    console.log("Server running on port: " + port)
-})
+async function init() {
+    await databaseService.connect()
+    await apiService.init({ endpoints, onServiceStopCallback: databaseService.disconnect })
+}
+init()

@@ -1,12 +1,10 @@
 (async () =>  {
-    const database = require('../database')
+    const databaseService = require('../services/database-service')
     const cronogramaModel = require('../models/cronogramaModel')
 
-    database.connect()
-
+    await databaseService.connect()
     await cronogramaModel.deleteMany()
-
-    database.disconnect()
+    await databaseService.disconnect()
 
 })()
 
