@@ -19,7 +19,24 @@ class Endpoint {
 
     init(app) {
         const { url, handler, method } = authService.proxyEndpoint(this)
-        app.use(url, handler)
+
+        console.log(`${url} ${method}`)
+
+        switch (method) {
+            case "GET":
+                app.get(url, handler)
+                break
+            case "POST":
+                app.post(url, handler)
+                break
+            case "DELETE":
+                app.delete(url, handler)
+                break
+            case "PUT":
+                app.put(url, handler)
+                break
+        
+        }
     }
 }
 

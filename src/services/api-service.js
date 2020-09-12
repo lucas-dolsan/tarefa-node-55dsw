@@ -9,27 +9,6 @@ if(!apiPort) {
 
 let app = null
 
-function registerEndpoints(endpoints) {
-    endpoints.map(({ method, url, handler }) => {
-        console.log(`${url} ${method}`)
-        switch (method) {
-            case "GET":
-                app.get(url, handler)
-                break
-            case "POST":
-                app.post(url, handler)
-                break
-            case "DELETE":
-                app.delete(url, handler)
-                break
-            case "PUT":
-                app.put(url, handler)
-                break
-        
-        }
-    })
-}
-
 async function init({endpoints, onServiceStopCallback}) {
     return new Promise((resolve, reject) => {
         try {
@@ -42,8 +21,8 @@ async function init({endpoints, onServiceStopCallback}) {
                     extended: true,
                 })
             )
-            
-            registerEndpoints(endpoints)
+
+            endpoints.map(endpoint => endpoint.init(app))
 
             app.listen(apiPort, async () => { 
                 console.log("Server listening on port: " + apiPort)

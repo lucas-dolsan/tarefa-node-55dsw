@@ -10,8 +10,10 @@ const userEndpoints = require("./users")
 const wipeDatabaseEndpoint = new Endpoint(
     "/api/wipe-database",
     "GET",
-    async (req, res) => await databaseService.wipeDatabase() && res.status(200), 
-    { requiresAccessToken: false }
+    async (req, res) => {
+        await databaseService.wipeDatabase()
+        return res.status(200).json({ message: "database wiped" }).end();
+    }, 
 )
 
 const endpoints = [

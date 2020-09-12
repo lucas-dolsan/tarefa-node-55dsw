@@ -25,7 +25,7 @@ async function wipeUsers(request, response) {
 function proxyEndpoint(endpoint) {
     function defaultRequestLog(request) {
         const now = new Date()
-        console.warn(`request at "${request.baseUrl}" [${now.getMonth()}-${now.getDate()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}]`)
+        console.log(`request at "${request.originalUrl}" [${now.getMonth()}-${now.getDate()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}]`)
     }    
     const proxiedHandler = async (request, response) => {
         defaultRequestLog(request)
@@ -34,9 +34,7 @@ function proxyEndpoint(endpoint) {
                 request.user = await getUserFromToken(request.header("Authorization"))
                 endpoint.handler(request, response)
             } else {
-                return response.json({
-                    message: "accessToken inválido",
-                })
+                response.status(401).json({ message: "Não autorizado" }).end();
             }
         } else {
             endpoint.handler(request, response)
@@ -60,7 +58,7 @@ async function isAccessTokenValid(accessToken) {
     return validTokens.includes(accessToken)
 }
 
-async function authenticate(request, response) {
+async function login(request, response) {
     const { login, password } = request.body
 
     const colaborador = await colaboradorModel.findOne({
@@ -188,7 +186,7 @@ async function register(request, response) {
 }
 
 module.exports = {
-    authenticate,
+    login,
     register,
     wipeUsers,
     proxyEndpoint,
