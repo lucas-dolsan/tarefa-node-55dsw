@@ -2,7 +2,7 @@ const AtividadeModel = require('../models/atividadeModel')
 const CronogramaModel = require('../models/cronogramaModel')
 
 async function getEveryAtividade(request, response) {
-    const atividades = await AtividadeModel.find()
+    const atividades = await AtividadeModel.find().lean()
     response.json({ atividades })
 }
 
@@ -18,8 +18,6 @@ async function createAtividade(request, response) {
         OS,
         AES,
         cronogramaId } = request.body
-
-    
 
     const atividadeDocument = new AtividadeModel({
         numeroItem,

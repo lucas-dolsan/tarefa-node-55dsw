@@ -1,6 +1,6 @@
 const Endpoint = require("../classes/endpoint")
-const authService = require("../services/auth-service")
+const userController = require('../controllers/userController')
 
 module.exports = [
-    //new Endpoint("/api/users/authenticate", "POST",),
+    new Endpoint("/api/users", "GET", userController.getEveryUser, { requiresAccessToken: true }),
 ]

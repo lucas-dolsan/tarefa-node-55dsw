@@ -1,6 +1,12 @@
 const CronogramaModel = require('../models/cronogramaModel')
 const AtividadeModel = require('../models/atividadeModel');
-const { Server } = require('mongodb');
+
+const asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+}
+
 
 async function getEveryCronograma(request, response) {
     const cronogramas = await CronogramaModel.find().populate('encarregado').populate('atividades')
@@ -18,13 +24,17 @@ async function getOneCronograma(request, response) {
 async function createCronograma(request, response) {
     const { nome, dataInicioAgendada, atividades, descricao, dataInicio, dataFimAgendada, dataFim } = request.body
 
-    const createdAtividades = await Promise.all(atividades.map(async atividade => {
-        const atividadeDocument = await AtividadeModel(atividade)
-        atividadeDocument.save()
-        return atividadeDocument
-    }))
+    const createdAtividades = []
+    
+    await asyncForEach(atividades, async atividade => {
+        const numeroItem = await AtividadeModel.countDocuments() + 1
+        const atividadeDocument = await AtividadeModel({ ...atividade, numeroItem })
+        await atividadeDocument.save()
+        createdAtividades.push(atividadeDocument)
+    })
 
-    console.log({encarregado: request.user});
+    console.log({atividades});
+    console.log({createdAtividades});
 
     const cronogramaDocument = new CronogramaModel({
         nome,
