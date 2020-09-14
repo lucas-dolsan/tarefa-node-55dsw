@@ -10,6 +10,7 @@ const atividadeSchema = new mongoose.Schema({
     dataFim: Date,
     OS: Number,
     AES: Number,
+    progresso: Number,
     executor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Colaborador'

@@ -7,6 +7,7 @@ const cronogramaSchema = new mongoose.Schema({
     dataInicio: Date,
     dataFimAgendada: Date,
     dataFim: Date,
+    progresso: Number,
     atividades: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Atividade'
