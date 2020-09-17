@@ -55,9 +55,18 @@ async function setAtividadeExecutor(request, response) {
 
 async function setProgresso(request, response) {
     const { atividadeId, progresso } = request.body
+    console.log(request.body);
     //finds the current atividade and updates it's new progress supplied in the request's body
     const atividade = await AtividadeModel.findById(atividadeId)
+    // if atividade didn't have progresso set before, it means it has just been started
+    if(!atividade.progresso) {
+        atividade.dataInicio = new Date()
+    }
     atividade.progresso = progresso
+    // if progresso is set to 100, atividade is done
+    if(atividade.progresso === 100) {
+        atividade.dataFim = new Date()
+    }
     await atividade.save()
     // gets every cronograma and parses it to json
     const cronogramas = await CronogramaModel.find().lean()
@@ -65,12 +74,20 @@ async function setProgresso(request, response) {
     const cronogramaId = cronogramas.find(({ atividades }) => atividades.map(({ _id }) => _id.toString()).includes(atividadeId))._id
     // gets the mongoose doc that corresponds the id
     const cronograma = await CronogramaModel.findById(cronogramaId).populate('atividades')
+   // if cronograma didn't have progress set before, it means it has just been started
+    if(!cronograma.progresso) {
+        cronograma.dataInicio = new Date()
+    }
     //sums up the total progress of the cronograma's atividades
     const totalProgresso = cronograma.atividades.reduce((acc, atividade) => {
         return acc + ( atividade.progresso || 0)
     }, 0)
     // sets the updated progress
     cronograma.progresso = totalProgresso / cronograma.atividades.length
+    // if progresso is set to 100, cronograma is done
+    if(cronograma.progresso === 100) {
+        cronograma.dataFim = new Date()
+    }
     await cronograma.save()
 
     response.json({success: true, message: 'progresso da ativdade atualizado com sucesso!'})

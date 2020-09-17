@@ -13,10 +13,16 @@ async function getEveryCronograma(request, response) {
 }
 
 async function getOneCronograma(request, response) {
-    const cronograma = await CronogramaModel.findById(request.params.id)
+    let cronograma = await CronogramaModel.findById(request.params.id)
                                        .populate('encarregado')
                                        .populate('atividades')
                                        .lean()
+    if(cronograma.atividades) {
+        cronograma.atividades = await Promise.all(cronograma.atividades.map(async atividade => {
+                return await AtividadeModel.findById(atividade._id).populate("executor").lean()
+        }))
+    }
+
     response.json({ cronograma })
 }
 
@@ -55,9 +61,29 @@ async function startCronograma(request, response) {
     response.json({ success: true, message: "cronograma iniciado com sucesso" })
 }
 
-async function getEveryCronogramaByEncarregado(request, response) {
-    const cronogramas = await CronogramaModel.find({ "encarregado": request.user.id }).lean()
-    response.json({ cronogramas })
+async function getEveryCronogramaFiltered(request, response) {
+    const fieldsToPopulate = "encarregado atividades"
+    const cronogramasEncarregado = await CronogramaModel.find({ "encarregado": request.user._id }).populate(fieldsToPopulate).lean()
+    const cronogramasExecutor = (await CronogramaModel.find().populate(fieldsToPopulate).lean()).filter(({ atividades }) => {
+        return atividades.some(atividade => atividade.executor === request.user._id)
+    })
+    let cronogramas = [...cronogramasEncarregado, ...cronogramasExecutor]
+    
+    cronogramas = await Promise.all(cronogramas.map(async cronograma => {
+        if(cronograma.atividades) {
+            cronograma.atividades = await Promise.all(cronograma.atividades.map(async atividade => {
+                return await AtividadeModel.findById(atividade._id).populate("executor").lean()
+            }))
+        }
+        return cronograma
+    }))
+    
+    const cronogramasHashmap = {}
+    // overrides repetitions
+    cronogramas.map(cronograma => cronogramasHashmap[cronograma._id] = cronograma)
+    
+    //remaps the hashmap to an array
+    response.json({ cronogramas: Object.keys(cronogramasHashmap).map(_id => cronogramasHashmap[_id]) })
 }
 
 module.exports = {
@@ -65,5 +91,5 @@ module.exports = {
     getEveryCronograma,
     getOneCronograma,
     startCronograma,
-    getEveryCronogramaByEncarregado,
+    getEveryCronogramaFiltered,
 }
