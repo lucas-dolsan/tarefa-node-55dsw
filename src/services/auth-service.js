@@ -59,7 +59,7 @@ async function isAccessTokenValid(accessToken) {
 }
 
 async function login(request, response) {
-    const {username, senha} = request.body
+    const { username, senha } = request.body
 
     const usuario = await usuarioModel.findOne({
         "username": username,
@@ -134,7 +134,9 @@ function validateLogin(login) {
 }
 
 async function register(request, response) {
-    const isLoginValid = validateLogin(login)
+    const { username, senha } = request.body
+
+    const isLoginValid = validateLogin(username)
 
     if (!isLoginValid.valid) {
         return response.json({
@@ -158,7 +160,7 @@ async function register(request, response) {
         return response.json({ message: isPasswordValid.message })
     }
 
-    const hashedPassword = hashPassword(login, senha)
+    const hashedPassword = hashPassword(username, senha)
 
     const accessToken = generateAccessToken(username, hashedPassword)
 
