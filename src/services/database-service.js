@@ -1,9 +1,6 @@
 const mongoose = require('mongoose')
 
 const { hostname, defaultConnectionArgs } = require('../config/database-config');
-const atividadeModel = require('../models/atividadeModel');
-const colaboradorModel = require('../models/colaboradorModel');
-const cronogramaModel = require('../models/cronogramaModel');
 
 async function connect() {
     console.log(`connecting to database... @${hostname}`);
@@ -12,7 +9,7 @@ async function connect() {
 }
 
 async function wipeDatabase() {
-    await Promise.all([atividadeModel.deleteMany(), colaboradorModel.deleteMany(), cronogramaModel.deleteMany()])
+    //await Promise.all([atividadeModel.deleteMany(), colaboradorModel.deleteMany(), cronogramaModel.deleteMany()])
 }
 
 async function disconnect() {
