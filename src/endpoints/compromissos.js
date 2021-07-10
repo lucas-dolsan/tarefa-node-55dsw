@@ -6,3 +6,4 @@ module.exports = [
     new Endpoint("/api/compromissos", "GET", compromissoController.findAll, { requiresAccessToken: false }),
     new Endpoint("/api/compromissos/:id", "GET", compromissoController.findById, { requiresAccessToken: false }),
 ]
+
