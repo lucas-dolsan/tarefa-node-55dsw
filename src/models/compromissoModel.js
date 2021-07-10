@@ -5,6 +5,8 @@ const compromissoSchema = new mongoose.Schema({
     descricao: String,
     local: String,
     data: Date,
+    usuarioId: String,
+    contatoId: String,
 })
 
 module.exports = mongoose.model('Compromisso', compromissoSchema);

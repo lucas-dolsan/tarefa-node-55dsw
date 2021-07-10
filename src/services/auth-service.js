@@ -171,7 +171,10 @@ async function register(request, response) {
         },
     }
 
-    const usuarioDoc = new usuarioModel(usuario)
+    const usuarioDoc = new usuarioModel({
+        ...usuario,
+        senha: hashedPassword,
+    })
 
     await usuarioDoc.save()
 
