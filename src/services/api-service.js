@@ -1,5 +1,4 @@
 const express = require("express")
-const bodyParser = require("body-parser")
 const cors = require("cors")
 const { apiPort } = require("../config/api-config")
 
@@ -13,14 +12,8 @@ async function init({endpoints, onServiceStopCallback}) {
     return new Promise((resolve, reject) => {
         try {
             app = express()
-    
             app.use(cors())
-            app.use(bodyParser.json())
-            app.use(
-                bodyParser.urlencoded({
-                    extended: true,
-                })
-            )
+            app.use(express.json())
 
             endpoints.map(endpoint => endpoint.init(app))
 

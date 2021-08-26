@@ -133,6 +133,17 @@ function validateLogin(login) {
     }
 }
 
+async function validateAccessToken(request, response) {
+    if(
+        !request.body.accessToken ||
+        await isAccessTokenValid(request.body.accessToken)
+    ) {
+        return response.json({ isValid: true })
+    } else {
+        return response.json({ isValid: false })
+    }
+}
+
 async function register(request, response) {
     const { username, senha } = request.body
 
@@ -178,7 +189,7 @@ async function register(request, response) {
 
     await usuarioDoc.save()
 
-    return response.json(usuarioDoc.auth.accessToken)
+    return response.json({ accessToken: usuarioDoc.auth.accessToken})
 }
 
 module.exports = {
@@ -188,4 +199,5 @@ module.exports = {
     proxyEndpoint,
     isAccessTokenValid,
     getUserFromToken,
+    validateAccessToken
 }
