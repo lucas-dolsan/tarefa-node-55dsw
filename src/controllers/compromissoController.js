@@ -27,7 +27,10 @@ async function findById(request, response) {
 }
 
 async function create(request, response) {
-    const compromisso = new CompromissoModel(request.body)
+    const compromisso = new CompromissoModel({
+        ...request.body,
+        usuarioId: request.user._id
+    })
     await compromisso.save()
     response.json(compromisso)
 }
