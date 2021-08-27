@@ -6,4 +6,5 @@ module.exports = [
     new Endpoint("/api/contatos", "GET", contatoController.find),
     new Endpoint("/api/contatos/:id", "PUT", contatoController.update),
     new Endpoint("/api/contatos/:id", "GET", contatoController.findById),
+    new Endpoint("/api/contatos/:id", "DELETE", contatoController.deleteById),
 ]

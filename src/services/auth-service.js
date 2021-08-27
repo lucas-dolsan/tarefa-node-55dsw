@@ -25,7 +25,7 @@ async function wipeUsers(request, response) {
 function proxyEndpoint(endpoint) {
     function defaultRequestLog(request) {
         const now = new Date()
-        console.log(`request at "${request.originalUrl}" [${now.getMonth()}-${now.getDate()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}]`)
+        console.log(`${request.method} at "${request.originalUrl}" [${now.getMonth()}-${now.getDate()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}]`)
     }    
     const proxiedHandler = async (request, response) => {
         defaultRequestLog(request)

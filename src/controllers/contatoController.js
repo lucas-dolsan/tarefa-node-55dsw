@@ -25,9 +25,15 @@ async function update(request, response) {
     response.json(contato)
 }
 
+async function deleteById(request, response) {
+    await ContatoModel.findByIdAndRemove(request.params.id)
+    response.sendStatus(200)
+}
+
 module.exports = {
     find,
     create,
     update,
     findById,
+    deleteById
 }
